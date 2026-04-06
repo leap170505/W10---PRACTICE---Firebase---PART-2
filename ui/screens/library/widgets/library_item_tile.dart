@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import '../view_model/library_item_data.dart';
 
 class LibraryItemTile extends StatelessWidget {
+  final LibraryItemData data;
+  final bool isPlaying;
+  final VoidCallback onTap;
+  final VoidCallback onLike;
+
   const LibraryItemTile({
     super.key,
     required this.data,
     required this.isPlaying,
     required this.onTap,
+    required this.onLike,
   });
-
-  final LibraryItemData data;
-  final bool isPlaying;
-  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +39,24 @@ class LibraryItemTile extends StatelessWidget {
           leading: CircleAvatar(
             backgroundImage: NetworkImage(data.song.imageUrl.toString()),
           ),
-          trailing: Text(
-            isPlaying ? "Playing" : "",
-            style: TextStyle(color: Colors.amber),
+          trailing: SizedBox(
+            width: 100,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                if (isPlaying)
+                  const Text(
+                    "Playing",
+                    style: TextStyle(color: Colors.amber),
+                  ),
+                const SizedBox(width: 10),
+                IconButton(
+                  onPressed: onLike,
+                  icon: const Icon(Icons.favorite_border, color: Colors.red),
+                ),
+                Text("${data.song.likes}"),
+              ],
+            ),
           ),
         ),
       ),
