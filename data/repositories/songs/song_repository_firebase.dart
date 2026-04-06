@@ -64,4 +64,10 @@ class SongRepositoryFirebase extends SongRepository {
       throw Exception('Failed to update likes');
     }
   }
+
+  @override
+  Future<List<Song>> fetchSongsByArtist(String artistId) async {
+    final allSongs = await fetchSongs();
+    return allSongs.where((song) => song.artistId == artistId).toList();
+  }
 }
